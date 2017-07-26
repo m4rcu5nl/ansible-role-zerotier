@@ -24,17 +24,15 @@
       name: zerotier-one
       state: present
     register: zerotier_client
-    notify:
-    - start zerotier-one
-    - enable zerotier-one
 
-#  - name: Start and enable zerotier-one service
-#    service:
-#      name: zerotier-one
-#      state: restarted
-#      enabled: yes
-#    when:
-#    - zerotier_client|changed
+  - name: Start zerotier-one service
+    service:
+      name: zerotier-one
+      state: started
+    when:
+    - zerotier_client|succeeded
+    notify:
+    - enable zerotier-one
 
   when:
   - zerotier_repo|succeeded
