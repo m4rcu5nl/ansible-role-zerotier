@@ -1,0 +1,33 @@
+---
+- block: # Join Zerotier network
+  - name: Get Zerotier NodeID
+    shell: /sbin/zerotier-cli info | awk '{print $3}'
+    register: nodeid
+
+  - name: Set NodeID as fact
+    set_fact:
+      zerotier_node_id: "{{ nodeid.stdout }}"
+
+  - name: Add and authorize members to network
+    uri:
+      url: "{{ zerotier_api_url }}/api/network/{{ zerotier_network_id }}/member/{{ zerotier_node_id }}"
+      method: POST
+      headers:
+        Authorization: bearer {{ zerotier_accesstoken }}
+      body:
+        name: "{{ inventory_hostname }}"
+        hidden: false
+        config:
+          authorized: true
+      body_format: json
+    register: apiresult
+
+  - name: Join Zerotier network
+    command: /sbin/zerotier-cli join {{ zerotier_network_id }}
+    args:
+      creates: /var/lib/zerotier-one/networks.d/{{ zerotier_network_id }}.conf
+
+  when:
+  - zerotier_accesstoken is defined
+  tags:
+  - configuration
