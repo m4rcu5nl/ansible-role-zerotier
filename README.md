@@ -1,38 +1,34 @@
-Role Name
+Zerotier
 =========
 
-A brief description of the role goes here.
+This Ansible role installs the zerotier-one package from Zerotier's yum repo, adds and authorizes new members to (existing) Zerotier network and tells the new members to join the network.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+This roles requires an access token for the Zerotier API. This enables the role to add new members to a private network and authorizes them. Also, the role needs the network ID of the Zerotier network the new members should join.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+###zerotier_api_url
+The url where the Zerotier API lives. Must use https protocol.    
+Default: https://my.zerotier.com
 
-Dependencies
-------------
+###zerotier_accesstoken
+The access token needed to authorize with the Zerotier API. You can generate one in your account settings on my.zerotier.com.
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+###zerotier_network_id (required)
+The 16 character network ID of the network the new members should join.
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
     - hosts: servers
+      vars:
+         zerotier_network_id: 1234567890qwerty
+         zerotier_accesstoken: "{{ vault_zerotier_accesstoken }}"
       roles:
-         - { role: username.rolename, x: 42 }
+         - { role: m4rcu5nl.zerotier }
 
-License
--------
-
-BSD
-
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
