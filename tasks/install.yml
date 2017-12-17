@@ -36,6 +36,7 @@
 
   when:
   - zerotier_repo|succeeded
+  - not ansible_check_mode
   tags:
   - installation
   - packages
