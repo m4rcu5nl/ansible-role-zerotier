@@ -29,5 +29,6 @@
 
   when:
   - zerotier_accesstoken is defined
+  - not ansible_check_mode
   tags:
   - configuration
