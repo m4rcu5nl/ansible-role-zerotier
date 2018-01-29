@@ -1,7 +1,7 @@
 ---
 - block: # Join Zerotier network
   - name: Get Zerotier NodeID
-    shell: /sbin/zerotier-cli info | awk '{print $3}'
+    shell: zerotier-cli info | awk '{print $3}'
     register: nodeid
 
   - name: Set NodeID as fact
@@ -23,7 +23,7 @@
     register: apiresult
 
   - name: Join Zerotier network
-    command: /sbin/zerotier-cli join {{ zerotier_network_id }}
+    command: zerotier-cli join {{ zerotier_network_id }}
     args:
       creates: /var/lib/zerotier-one/networks.d/{{ zerotier_network_id }}.conf
 

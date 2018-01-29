@@ -1,4 +1,6 @@
 ---
+
+  # Redhat variants
 - block: # Add zerotier repo and it's gpg key
   - name: Add zerotier gpg key
     rpm_key:
@@ -13,10 +15,29 @@
       gpgcheck: yes
       enabled: yes
     register: zerotier_repo
-
   tags:
   - installation
   - repositories
+  when: ansible_os_family == "RedHat"
+
+  # Debian variants
+- block: # Add zerotier repo and it's gpg key if not already done.
+  - name: Check if zerotier is already installed
+    package:
+      name: zerotier-one
+      state: present
+    check_mode: true
+    register: zerotier_repo
+
+  - name: Install zerotier
+    shell: curl -s 'https://pgp.mit.edu/pks/lookup?op=get&search=0x1657198823E52A61' | gpg --import && \
+               if z=$(curl -s 'https://install.zerotier.com/' | gpg); then echo "$z" | sudo bash; fi
+    register: zerotier_repo
+    when: zerotier_repo.changed
+  tags:
+  - installation
+  - repositories
+  when: ansible_os_family == "Debian"
 
 - block: #Install and enable zerotier-one
   - name: Install zerotier-one
