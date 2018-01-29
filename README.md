@@ -3,7 +3,7 @@
 Zerotier
 =========
 
-This Ansible role installs the zerotier-one package from Zerotier's yum repo, adds and authorizes new members to (existing) Zerotier network and tells the new members to join the network.
+This Ansible role installs the zerotier-one package, adds and authorizes new members to (existing) Zerotier network and tells the new members to join the network.
 
 Requirements
 ------------
