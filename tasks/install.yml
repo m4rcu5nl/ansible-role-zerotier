@@ -23,17 +23,15 @@
   # Debian variants
 - block: # Add zerotier repo and it's gpg key if not already done.
   - name: Check if zerotier is already installed
-    package:
-      name: zerotier-one
-      state: present
-    check_mode: true
+    stat:
+      path: /etc/apt/sources.list.d/zerotier.list
     register: zerotier_repo
 
   - name: Install zerotier
     shell: curl -s 'https://pgp.mit.edu/pks/lookup?op=get&search=0x1657198823E52A61' | gpg --import && \
                if z=$(curl -s 'https://install.zerotier.com/' | gpg); then echo "$z" | sudo bash; fi
     register: zerotier_repo
-    when: zerotier_repo.changed
+    when: zerotier_repo.stat.exists == False
   tags:
   - installation
   - repositories
