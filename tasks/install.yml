@@ -1,5 +1,11 @@
 ---
 
+# Ensure that curl is installed
+- name: Install curl
+  package:
+    name: curl
+    state: present
+
   # Redhat variants
 - block: # Add zerotier repo and it's gpg key
   - name: Add zerotier gpg key
