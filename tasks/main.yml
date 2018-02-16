@@ -2,12 +2,10 @@
 # tasks file for ansible-role-zerotier
 - import_tasks: install.yml
 
-- name: Check for successfully joined networks
-  shell: zerotier-cli listnetworks | grep 'OK'| awk '{print $3}'
-  register: joinednetworks
-  check_mode: yes
-
-- include_tasks: join_network.yml
+- import_tasks: authorize_node.yml
   when:
-  - 'zerotier_network_id not in joinednetworks.stdout'
   - zerotier_accesstoken is defined
+
+- import_tasks: join_network.yml
+  when:
+  - zerotier_network_id is defined

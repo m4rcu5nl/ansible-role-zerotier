@@ -1,0 +1,31 @@
+---
+- block:
+  - name: Get Zerotier NodeID
+    shell: zerotier-cli info | awk '{print $3}'
+    register: nodeid
+    changed_when: false
+
+  - name: Set NodeID as fact
+    set_fact:
+      zerotier_node_id: "{{ nodeid.stdout }}"
+
+  - name: Add and authorize members to network
+    uri:
+      url: "{{ zerotier_api_url }}/api/network/{{ zerotier_network_id }}/member/{{ zerotier_node_id }}"
+      method: POST
+      headers:
+        Authorization: bearer {{ zerotier_accesstoken }}
+      body:
+        name: "{{ zerotier_register_short_hostname | ternary(inventory_hostname_short, inventory_hostname) }}"
+        hidden: false
+        config:
+          authorized: "{{ zerotier_authorize_member }}"
+          ipAssignments: "{{ zerotier_member_ip_assignments | default([]) | list }}"
+      body_format: json
+    register: apiresult
+
+  when:
+  - zerotier_accesstoken is defined
+  - not ansible_check_mode
+  tags:
+  - configuration

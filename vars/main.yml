@@ -1,2 +1,4 @@
 ---
 # vars file for ansible-role-zerotier
+zerotier_download_base_url: http://download.zerotier.com
+zerotier_gpg_url: https://download.zerotier.com/contact@zerotier.com.gpg
