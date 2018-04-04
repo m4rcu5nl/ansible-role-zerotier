@@ -30,6 +30,9 @@ Default: `false`
 ### zerotier_member_ip_assignments
 A list of IP addresses to assign this member. The member will be automatically assigned an address on the network if left out.
 
+### zerotier_member_description
+Optional desription for a member.
+
 Example Playbook
 ----------------
 
@@ -49,6 +52,24 @@ Example Inventory
 
 ```INI
     [servers]
-    web1.example.com zerotier_member_ip_assignments='["192.168.195.1", "192.168.195.2", "192.168.195.3"]'
+    web1.example.com zerotier_member_ip_assignments='["192.168.195.1", "192.168.195.2"]'
+    web2.example.com zerotier_member_ip_assignments='["192.168.195.3", "192.168.195.4"'
     db1.example.com zerotier_member_ip_assignments='["192.168.195.10"]'
+    db2.example.com zerotier_member_ip_assignments='["192.168.195.11"]'
+    db3.example.com zerotier_member_ip_assignments='["192.168.195.12"]'
+
+    [webservers]
+    web1.example.com
+    web2.example.com
+
+    [dbservers]
+    db1.example.com
+    db2.example.com
+    db3.example.com
+
+    [webservers:vars]
+    zerotier_member_description='<AppName> webserver'
+
+    [dbservers:vars]
+    zerotier_member_description='<AppName> db cluster node'
 ```
