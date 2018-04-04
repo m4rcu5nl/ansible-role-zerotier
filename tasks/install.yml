@@ -17,12 +17,12 @@
       name: zerotier-one
       state: started
     when:
-    - zerotier_client|succeeded
+    - zerotier_client is succeeded
     notify:
     - enable zerotier-one
 
   when:
-  - zerotier_repo|succeeded
+  - zerotier_repo is succeeded
   - not ansible_check_mode
   tags:
   - installation
