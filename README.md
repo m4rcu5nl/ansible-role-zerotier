@@ -38,8 +38,17 @@ Example Playbook
       vars:
          zerotier_network_id: 1234567890qwerty
          zerotier_accesstoken: "{{ vault_zerotier_accesstoken }}"
-         zerotier_member_ip_assignments:
-           - 192.168.195.1
+         zerotier_register_short_hostname: true
+
       roles:
          - { role: m4rcu5nl.zerotier }
+```
+
+Example Inventory
+----------------
+
+```INI
+    [servers]
+    web1.example.com zerotier_member_ip_assignments='["192.168.195.1", "192.168.195.2", "192.168.195.3"]'
+    db1.example.com zerotier_member_ip_assignments='["192.168.195.10"]'
 ```
