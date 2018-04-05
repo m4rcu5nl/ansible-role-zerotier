@@ -10,7 +10,8 @@
       zerotier_node_id: "{{ nodeid.stdout }}"
 
   - name: Add and authorize members to network
-    uri:
+    local_action:
+      module: uri
       url: "{{ zerotier_api_url }}/api/network/{{ zerotier_network_id }}/member/{{ zerotier_node_id }}"
       method: POST
       headers:
@@ -24,6 +25,7 @@
           ipAssignments: "{{ zerotier_member_ip_assignments | default([]) | list }}"
       body_format: json
     register: apiresult
+    become: false
 
   when:
   - zerotier_accesstoken is defined
