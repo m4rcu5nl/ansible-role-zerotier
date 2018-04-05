@@ -1,0 +1,9 @@
+- name: Add ZeroTier PGP key
+  apt_key:
+    url: "{{ zerotier_gpg_url }}"
+
+- name: Add ZeroTier APT repository
+  apt_repository:
+    repo: deb {{ zerotier_download_base_url }}/debian/{{ ansible_distribution_release }} {{ ansible_distribution_release }} main
+    filename: zerotier
+  register: zerotier_repo
