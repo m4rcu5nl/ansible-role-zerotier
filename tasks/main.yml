@@ -2,7 +2,7 @@
 # tasks file for ansible-role-zerotier
 - import_tasks: install.yml
   when:
-  - "'zt0' not in ansible_interfaces"
+  - not skip_install|default(false)|bool
 
 - import_tasks: authorize_node.yml
   when:
