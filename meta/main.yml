@@ -1,7 +1,6 @@
 galaxy_info:
   author: Marcus Meurs
   description: Install zerotier-one package and add new members to a zerotier network
-  company: NULL
 
   # If the issue tracker for your role is not on github, uncomment the
   # next line and provide a value
