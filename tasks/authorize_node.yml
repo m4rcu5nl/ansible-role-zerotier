@@ -9,7 +9,22 @@
     set_fact:
       zerotier_node_id: "{{ nodeid.stdout }}"
 
-  - name: Add and authorize members to network
+  - name: Authorize members to network
+    local_action:
+      module: uri
+      url: "{{ zerotier_api_url }}/api/network/{{ zerotier_network_id }}/member/{{ zerotier_node_id }}"
+      method: POST
+      headers:
+        Authorization: bearer {{ zerotier_accesstoken }}
+      body:
+        hidden: false
+        config:
+          authorized: "{{ zerotier_authorize_member }}"
+      body_format: json
+    register: auth_apiresult
+    become: false
+
+  - name: Configure members in network
     local_action:
       module: uri
       url: "{{ zerotier_api_url }}/api/network/{{ zerotier_network_id }}/member/{{ zerotier_node_id }}"
@@ -19,12 +34,10 @@
       body:
         name: "{{ zerotier_register_short_hostname | ternary(inventory_hostname_short, inventory_hostname) }}"
         description: "{{ zerotier_member_description | default() }}"
-        hidden: false
         config:
-          authorized: "{{ zerotier_authorize_member }}"
           ipAssignments: "{{ zerotier_member_ip_assignments | default([]) | list }}"
       body_format: json
-    register: apiresult
+    register: conf_apiresult
     become: false
 
   when:
