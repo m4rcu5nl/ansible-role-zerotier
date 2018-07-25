@@ -22,7 +22,7 @@
     - enable zerotier-one
 
   when:
-  - zerotier_repo is succeeded
+  - zerotier_repo is not defined or zerotier_repo is succeeded
   - not ansible_check_mode
   tags:
   - installation
