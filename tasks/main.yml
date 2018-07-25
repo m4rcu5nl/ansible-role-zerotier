@@ -1,6 +1,8 @@
 ---
 # tasks file for ansible-role-zerotier
 - import_tasks: install.yml
+  when:
+  - not skip_install|default(false)|bool
 
 - import_tasks: authorize_node.yml
   when:

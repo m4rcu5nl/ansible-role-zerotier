@@ -3,7 +3,7 @@
     state: present
     key: "{{ zerotier_gpg_url }}"
 
-- name: Add ZeroTier repo
+- name: Add ZeroTier repo for RHEL/CentOS
   yum_repository:
     name: zerotier
     description: ZeroTier, Inc. RPM Release Repository
@@ -11,3 +11,14 @@
     gpgcheck: yes
     enabled: yes
   register: zerotier_repo
+  when: ansible_distribution != "Fedora"
+
+- name: Add zerotier repo for Fedora
+  yum_repository:
+    name: zerotier
+    description: ZeroTier, Inc. RPM Release Repository
+    baseurl: https://download.zerotier.com/redhat/fc/$releasever
+    gpgcheck: yes
+    enabled: yes
+  register: zerotier_repo
+  when: ansible_distribution == "Fedora"
