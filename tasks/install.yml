@@ -10,6 +10,7 @@
     package:
       name: zerotier-one
       state: present
+      update_cache: yes
     register: zerotier_client
 
   - name: Start zerotier-one service
