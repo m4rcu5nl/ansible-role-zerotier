@@ -10,8 +10,7 @@
       zerotier_node_id: "{{ nodeid.stdout }}"
 
   - name: Authorize members to network
-    local_action:
-      module: uri
+    uri:
       url: "{{ zerotier_api_url }}/api/network/{{ zerotier_network_id }}/member/{{ zerotier_node_id }}"
       method: POST
       headers:
@@ -21,12 +20,12 @@
         config:
           authorized: "{{ zerotier_authorize_member }}"
       body_format: json
-    register: auth_apiresult
-    become: false
+      register: auth_apiresult
+      become: false
+    delegate_to: "{{ zerotier_api_delegate }}"
 
   - name: Configure members in network
-    local_action:
-      module: uri
+    uri:
       url: "{{ zerotier_api_url }}/api/network/{{ zerotier_network_id }}/member/{{ zerotier_node_id }}"
       method: POST
       headers:
@@ -37,8 +36,9 @@
         config:
           ipAssignments: "{{ zerotier_member_ip_assignments | default([]) | list }}"
       body_format: json
-    register: conf_apiresult
-    become: false
+      register: conf_apiresult
+      become: false
+    delegate_to: "{{ zerotier_api_delegate }}"
 
   when:
   - zerotier_accesstoken is defined
