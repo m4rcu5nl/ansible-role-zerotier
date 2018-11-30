@@ -4,6 +4,7 @@
     shell: zerotier-cli info | awk '{print $3}'
     register: nodeid
     changed_when: false
+    become: yes
 
   - name: Set NodeID as fact
     set_fact:

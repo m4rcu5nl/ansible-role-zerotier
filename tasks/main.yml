@@ -3,6 +3,7 @@
 - import_tasks: install.yml
   when:
   - not skip_install|default(false)|bool
+  become: yes
 
 - import_tasks: authorize_node.yml
   when:
@@ -11,3 +12,4 @@
 - import_tasks: join_network.yml
   when:
   - zerotier_network_id is defined
+  become: yes
