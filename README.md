@@ -44,7 +44,7 @@ Example Playbook
          zerotier_register_short_hostname: true
 
       roles:
-         - { role: m4rcu5nl.zerotier }
+         - { role: m4rcu5nl.zerotier, become: true }
 ```
 
 Example Inventory

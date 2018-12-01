@@ -1,6 +1,7 @@
 galaxy_info:
   author: Marcus Meurs
   description: Install zerotier-one package and add new members to a zerotier network
+  company: None
 
   # If the issue tracker for your role is not on github, uncomment the
   # next line and provide a value
@@ -13,7 +14,7 @@ galaxy_info:
   # - GPLv3
   # - Apache
   # - CC-BY
-  license: BSD
+  license: GPLv3
 
   min_ansible_version: 2.4
 
@@ -49,7 +50,7 @@ galaxy_info:
   #   - 99.99
 
   galaxy_tags:
-  - zerotier-one
+  - zerotier
   - networking
     # List tags for your role here, one per line. A tag is a keyword that describes
     # and categorizes the role. Users find roles by searching for tags. Be sure to
