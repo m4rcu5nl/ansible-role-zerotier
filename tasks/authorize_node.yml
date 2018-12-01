@@ -9,6 +9,13 @@
     set_fact:
       zerotier_node_id: "{{ nodeid.stdout }}"
 
+  when:
+  - zerotier_accesstoken is defined
+  - not ansible_check_mode
+  tags:
+  - configuration
+
+- block:
   - name: Authorize members to network
     uri:
       url: "{{ zerotier_api_url }}/api/network/{{ zerotier_network_id }}/member/{{ zerotier_node_id }}"
@@ -21,7 +28,6 @@
           authorized: "{{ zerotier_authorize_member }}"
       body_format: json
       register: auth_apiresult
-      become: false
     delegate_to: "{{ zerotier_api_delegate }}"
 
   - name: Configure members in network
@@ -37,7 +43,6 @@
           ipAssignments: "{{ zerotier_member_ip_assignments | default([]) | list }}"
       body_format: json
       register: conf_apiresult
-      become: false
     delegate_to: "{{ zerotier_api_delegate }}"
 
   when:
@@ -45,3 +50,4 @@
   - not ansible_check_mode
   tags:
   - configuration
+  become: false
