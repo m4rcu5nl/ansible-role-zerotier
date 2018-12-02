@@ -33,6 +33,9 @@ A list of IP addresses to assign this member. The member will be automatically a
 ### zerotier_member_description
 Optional desription for a member.
 
+### zerotier_api_delegate
+Option to delegate tasks for Zerotier API calls. By default the API calls are made from the machine running the role.
+
 Example Playbook
 ----------------
 
@@ -44,7 +47,7 @@ Example Playbook
          zerotier_register_short_hostname: true
 
       roles:
-         - { role: m4rcu5nl.zerotier }
+         - { role: m4rcu5nl.zerotier, become: true }
 ```
 
 Example Inventory
