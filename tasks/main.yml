@@ -3,10 +3,20 @@
 - import_tasks: install.yml
   when:
   - not skip_install|default(false)|bool
+  - ansible_local.zerotier is not defined
+
+- block:
+  - name: Update ansible_local facts
+    script: set_facts.sh
+
+  - name: Re-gather facts
+    setup: ~
+
 
 - import_tasks: authorize_node.yml
   when:
   - zerotier_accesstoken is defined
+  - ansible_local.zerotier.node_id is defined
 
 - import_tasks: join_network.yml
   when:
