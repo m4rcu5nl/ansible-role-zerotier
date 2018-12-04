@@ -15,7 +15,7 @@
 
 - import_tasks: authorize_node.yml
   when:
-  - zerotier_accesstoken is defined
+  - zerotier_api_accesstoken | length > 0
   - ansible_local.zerotier.node_id is defined
 
 - import_tasks: join_network.yml
