@@ -6,6 +6,9 @@ NETWORKS=$(zerotier-cli listnetworks | tail -n+2)
 
 function file_content {
     if [ ! -z "$NETWORKS" ]; then
+        network_count=$(echo $NETWORKS |wc -l)
+        counter=1
+
         echo "{"
         echo "  \"node_id\":\"${NODE_STATUS[2]}\","
         echo "  \"networks\": {"
@@ -13,7 +16,13 @@ function file_content {
             network=($REPLY)
             echo "    \"${network[2]}\": {"
             echo "        \"status\":\"${network[5]}\""
-            echo "        }"
+
+            if [ "$counter" -eq "$network_count" ]; then
+                echo "    }"
+            else
+                echo "    },"
+            fi
+            ((counter++))
         done <<< $NETWORKS
         echo "  }"
         echo "}"
@@ -31,4 +40,3 @@ file_content > $FACT_FILE
 
 # TO-DO
 # Consider something that hadles JSON better than Bash does
-# The above will fail when it runs in to more than 1 network
