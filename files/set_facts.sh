@@ -8,18 +8,17 @@ function file_content {
     if [ ! -z "$NETWORKS" ]; then
         echo "{"
         echo "  \"node_id\":\"${NODE_STATUS[2]}\","
-        echo "  \"networks\": ["
+        echo "  \"networks\": {"
         while read -r; do
             network=($REPLY)
-            echo "    {"
-            echo "    \"id\":\"${network[2]}\","
-            echo "    \"status\":\"${network[5]}\""
-            echo "    }"
+            echo "    \"${network[2]}\": {"
+            echo "        \"status\":\"${network[5]}\""
+            echo "        }"
         done <<< $NETWORKS
-        echo "  ]"
+        echo "  }"
         echo "}"
     else
-        echo "{\"node_id\":\"${NODE_STATUS[2]}\"}"
+        echo "{\"node_id\":\"${NODE_STATUS[2]}\",\"networks\":{}}"
     fi
 }
 
