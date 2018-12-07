@@ -4,9 +4,18 @@
   when:
   - not skip_install|default(false)|bool
 
+- block:
+  - name: Update ansible_local facts
+    script: set_facts.sh
+
+  - name: Re-gather facts
+    setup: ~
+
+
 - import_tasks: authorize_node.yml
   when:
-  - zerotier_accesstoken is defined
+  - zerotier_api_accesstoken | length > 0
+  - ansible_local.zerotier.node_id is defined
 
 - import_tasks: join_network.yml
   when:

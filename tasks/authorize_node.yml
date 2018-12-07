@@ -1,27 +1,11 @@
 ---
 - block:
-  - name: Get Zerotier NodeID
-    shell: zerotier-cli info | awk '{print $3}'
-    register: nodeid
-    changed_when: false
-
-  - name: Set NodeID as fact
-    set_fact:
-      zerotier_node_id: "{{ nodeid.stdout }}"
-
-  when:
-  - zerotier_accesstoken is defined
-  - not ansible_check_mode
-  tags:
-  - configuration
-
-- block:
-  - name: Authorize members to network
+  - name: Authorize new members to network
     uri:
-      url: "{{ zerotier_api_url }}/api/network/{{ zerotier_network_id }}/member/{{ zerotier_node_id }}"
+      url: "{{ zerotier_api_url }}/api/network/{{ zerotier_network_id }}/member/{{ ansible_local.zerotier.node_id }}"
       method: POST
       headers:
-        Authorization: bearer {{ zerotier_accesstoken }}
+        Authorization: bearer {{ zerotier_api_accesstoken }}
       body:
         hidden: false
         config:
@@ -29,15 +13,17 @@
       body_format: json
       register: auth_apiresult
     delegate_to: "{{ zerotier_api_delegate }}"
+    when:
+      - ansible_local.zerotier.networks[zerotier_network_id] is not defined or ansible_local.zerotier.networks[zerotier_network_id].status != 'OK'
 
   - name: Configure members in network
     uri:
-      url: "{{ zerotier_api_url }}/api/network/{{ zerotier_network_id }}/member/{{ zerotier_node_id }}"
+      url: "{{ zerotier_api_url }}/api/network/{{ zerotier_network_id }}/member/{{ ansible_local.zerotier.node_id }}"
       method: POST
       headers:
-        Authorization: bearer {{ zerotier_accesstoken }}
+        Authorization: bearer {{ zerotier_api_accesstoken }}
       body:
-        name: "{{ zerotier_register_short_hostname | ternary(inventory_hostname_short, inventory_hostname) }}"
+        name: "{{ zerotier_member_register_short_hostname | ternary(inventory_hostname_short, inventory_hostname) }}"
         description: "{{ zerotier_member_description | default() }}"
         config:
           ipAssignments: "{{ zerotier_member_ip_assignments | default([]) | list }}"
@@ -46,7 +32,6 @@
     delegate_to: "{{ zerotier_api_delegate }}"
 
   when:
-  - zerotier_accesstoken is defined
   - not ansible_check_mode
   tags:
   - configuration

@@ -3,38 +3,54 @@
 ZeroTier
 =========
 
-This Ansible role installs the `zerotier-one` package, adds and authorizes new members to (existing) ZeroTier networks, and tells the new member to join the network.
+This Ansible role adds the ZeroTier repository and installs the `zerotier-one` package using your system's package manager. Depending on the provided variables this role can also add and authorize new members to (existing) ZeroTier networks, and tell the new member to join the network.
 
 Requirements
 ------------
 
-This role has an optional access token variable to authorize the member using the ZeroTier API. The role also takes the ID of the ZeroTier network to automatically join the new member.
+Technically this role has no requirements. If it's ran without any variables set it will only run the installation tasks. The following variables impact the role's behavior:
+
+[**zerotier_network_id**](#zerotier_network_id): when set hosts are told to join this network.  
+[**zerotier_api_accesstoken**](#zerotier_api_accesstoken): when set the role can handle member authentication and configuration using the ZeroTier API.  
+
 
 Role Variables
 --------------
 
-### zerotier_api_url
-The url where the Zerotier API lives. Must use HTTPS protocol.
-Default: https://my.zerotier.com
-
-### zerotier_accesstoken
-The access token needed to authorize with the ZeroTier API. You can generate one in your account settings at https://my.zerotier.com/. If this is left out then the newly joined member will not be automatically authorized.
-
 ### zerotier_network_id
-The 16 character network ID of the network the new members should join. The node will not join any network if omitted.
+*Type*: string  
+*Default value*:   
+*Description*: The 16 character network ID of the network the new members should join. The node will not join any network if omitted.
 
-### zerotier_register_short_hostname
-Used to register the short hostname (without the FQDN) on the network instead of the long one.
-Default: `false`
+### zerotier_member_register_short_hostname
+*Type*: boolean  
+*Default value*: `false`  
+*Description*: By default `inventory_hostname` will be used to name a member in a network. If set to `true`, `inventory_hostname_short` will be used instead.
 
 ### zerotier_member_ip_assignments
-A list of IP addresses to assign this member. The member will be automatically assigned an address on the network if left out.
+*Type*: list  
+*Default value*: `[]`    
+*Description*: A list of IP addresses to assign this member. The member will be automatically assigned an address on the network if left out.
 
 ### zerotier_member_description
-Optional desription for a member.
+*Type*: string  
+*Default value*: `""`      
+*Description*: Optional desription for a member.
+
+### zerotier_api_accesstoken
+*Type*: string  
+*Default value*: `""`   
+*Description*: The access token needed to authorize with the ZeroTier API. You can generate one in your account settings at https://my.zerotier.com/. If this is left out then the newly joined member will not be automatically authorized.
+
+### zerotier_api_url
+*Type*: string  
+*Default value*: `https://my.zerotier.com`  
+*Description*: The url where the Zerotier API lives. Must use HTTPS protocol.  
 
 ### zerotier_api_delegate
-Option to delegate tasks for Zerotier API calls. By default the API calls are made from the machine running the role.
+*Type*: string  
+*Default value*: `localhost`      
+*Description*: Option to delegate tasks for Zerotier API calls. This is usefull in a situation where API calls can only be made from a whitelisted management server, for example.
 
 Example Playbook
 ----------------

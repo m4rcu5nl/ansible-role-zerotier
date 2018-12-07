@@ -2,8 +2,29 @@
   apt_key:
     url: "{{ zerotier_gpg_url }}"
 
+- name: Check if Ubuntu release has dedicated repo
+  uri:
+    url: "{{ zerotier_download_base_url }}/debian/{{ zerotier_deb_release_repo }}"
+  failed_when: false
+  when:
+    - ansible_facts['distribution'] == "Ubuntu"
+  register: release_repo
+
+- block:
+  - name: Overwrite Ubuntu release repo name
+    set_fact:
+      zerotier_deb_release_repo: bionic
+
+  - name: Re-gather facts
+    setup: ~
+
+  when:
+    - ansible_facts['distribution'] == "Ubuntu"
+    - ansible_facts['distribution_major_version'] == "18"
+    - release_repo.status == 404
+
 - name: Add ZeroTier APT repository
   apt_repository:
-    repo: deb {{ zerotier_download_base_url }}/debian/{{ ansible_distribution_release }} {{ ansible_distribution_release }} main
+    repo: deb {{ zerotier_download_base_url }}/debian/{{ zerotier_deb_release_repo }} {{ zerotier_deb_release_repo }} main
     filename: zerotier
   register: zerotier_repo
