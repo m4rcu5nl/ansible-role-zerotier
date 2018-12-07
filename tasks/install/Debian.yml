@@ -19,9 +19,9 @@
     setup: ~
 
   when:
-    - release_repo.status == 404
     - ansible_facts['distribution'] == "Ubuntu"
     - ansible_facts['distribution_major_version'] == "18"
+    - release_repo.status == 404
 
 - name: Add ZeroTier APT repository
   apt_repository:
