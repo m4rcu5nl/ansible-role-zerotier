@@ -16,6 +16,7 @@ function file_content {
             network=($REPLY)
             echo "    \"${network[2]}\": {"
             echo "        \"status\":\"${network[5]}\""
+            echo "        \"device\":\"${network[7]}\""
 
             if [ "$counter" -eq "$network_count" ]; then
                 echo "    }"
@@ -39,4 +40,4 @@ file_content > $FACT_FILE
 
 
 # TO-DO
-# Consider something that hadles JSON better than Bash does
+# Handle different states than "OK". Other statuses can mess up positions.

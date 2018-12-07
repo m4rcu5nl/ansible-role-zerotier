@@ -3,7 +3,6 @@
 - import_tasks: install.yml
   when:
   - not skip_install|default(false)|bool
-  - ansible_local.zerotier is not defined
 
 - block:
   - name: Update ansible_local facts
