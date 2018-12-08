@@ -15,7 +15,7 @@ function file_content {
         while read -r; do
             network=($REPLY)
             echo "    \"${network[2]}\": {"
-            echo "        \"status\":\"${network[5]}\""
+            echo "        \"status\":\"${network[5]}\","
             echo "        \"device\":\"${network[7]}\""
 
             if [ "$counter" -eq "$network_count" ]; then
