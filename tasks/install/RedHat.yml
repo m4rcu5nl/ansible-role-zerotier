@@ -11,7 +11,7 @@
     gpgcheck: yes
     enabled: yes
   register: zerotier_repo
-  when: ansible_distribution != "Fedora"
+  when: ansible_facts['distribution'] != "Fedora"
 
 - name: Add zerotier repo for Fedora
   yum_repository:
@@ -21,4 +21,4 @@
     gpgcheck: yes
     enabled: yes
   register: zerotier_repo
-  when: ansible_distribution == "Fedora"
+  when: ansible_facts['distribution'] == "Fedora"
