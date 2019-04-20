@@ -59,7 +59,7 @@ Example Playbook
     - hosts: servers
       vars:
          zerotier_network_id: 1234567890qwerty
-         zerotier_accesstoken: "{{ vault_zerotier_accesstoken }}"
+         zerotier_api_accesstoken: "{{ vault_zerotier_accesstoken }}"
          zerotier_register_short_hostname: true
 
       roles:
