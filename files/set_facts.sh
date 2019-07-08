@@ -6,7 +6,7 @@ NETWORKS=$(zerotier-cli listnetworks | tail -n+2)
 
 function file_content {
     if [ ! -z "$NETWORKS" ]; then
-        network_count=$(echo $NETWORKS |wc -l)
+        network_count=$(echo "$NETWORKS" |wc -l)
         counter=1
 
         echo "{"
