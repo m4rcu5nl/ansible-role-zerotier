@@ -11,7 +11,7 @@
         config:
           authorized: "{{ zerotier_authorize_member }}"
       body_format: json
-      register: auth_apiresult
+    register: auth_apiresult
     delegate_to: "{{ zerotier_api_delegate }}"
     when:
     - ansible_local['zerotier']['networks'][zerotier_network_id] is not defined or
@@ -29,7 +29,7 @@
         config:
           ipAssignments: "{{ zerotier_member_ip_assignments | default([]) | list }}"
       body_format: json
-      register: conf_apiresult
+    register: conf_apiresult
     delegate_to: "{{ zerotier_api_delegate }}"
 
   when:
