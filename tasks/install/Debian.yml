@@ -1,7 +1,7 @@
 - name: Add ZeroTier PGP key
   apt_key:
     url: "{{ zerotier_gpg_url }}"
-    id: "0x74A5E9C458E1A431F1DA57A71657198823E52A61"
+    id: "{{ zerotier_gpg_fingerprint }}"
 
 - name: Check if Ubuntu release has dedicated repo
   uri:

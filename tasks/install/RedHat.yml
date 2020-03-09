@@ -2,6 +2,7 @@
   rpm_key:
     state: present
     key: "{{ zerotier_gpg_url }}"
+    fingerprint: "{{ zerotier_gpg_fingerprint }}"
 
 - name: Add ZeroTier repo for RHEL/CentOS
   yum_repository:

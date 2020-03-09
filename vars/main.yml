@@ -3,3 +3,4 @@
 zerotier_download_base_url: http://download.zerotier.com
 zerotier_deb_release_repo: "{{ ansible_facts['distribution_release'] }}"
 zerotier_gpg_url: https://download.zerotier.com/contact@zerotier.com.gpg
+zerotier_gpg_fingerprint: 74A5E9C458E1A431F1DA57A71657198823E52A61
