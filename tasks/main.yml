@@ -2,20 +2,20 @@
 # tasks file for ansible-role-zerotier
 - import_tasks: install.yml
   when:
-  - not skip_install|default(false)|bool
+  - not skip_install | default(false) | bool
 
 - block:
   - name: Update ansible_local facts
     script: set_facts.sh
 
-  - name: Re-gather facts
-    setup: ~
+  - name: Re-gather ansible_local facts
+    setup: filter=ansible_local
 
 
 - import_tasks: authorize_node.yml
   when:
   - zerotier_api_accesstoken | length > 0
-  - ansible_local.zerotier.node_id is defined
+  - ansible_local['zerotier']['node_id'] is defined
 
 - import_tasks: join_network.yml
   when:

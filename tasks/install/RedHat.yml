@@ -2,6 +2,7 @@
   rpm_key:
     state: present
     key: "{{ zerotier_gpg_url }}"
+    fingerprint: "{{ zerotier_gpg_fingerprint }}"
 
 - name: Add ZeroTier repo for RHEL/CentOS
   yum_repository:
@@ -11,7 +12,7 @@
     gpgcheck: yes
     enabled: yes
   register: zerotier_repo
-  when: ansible_distribution != "Fedora"
+  when: ansible_facts['distribution'] != "Fedora"
 
 - name: Add zerotier repo for Fedora
   yum_repository:
@@ -21,4 +22,4 @@
     gpgcheck: yes
     enabled: yes
   register: zerotier_repo
-  when: ansible_distribution == "Fedora"
+  when: ansible_facts['distribution'] == "Fedora"
