@@ -12,16 +12,23 @@
   register: release_repo
 
 - block:
-  - name: Overwrite Ubuntu release repo name
+  - name: Overwrite Ubuntu release repo name for cosmic
     set_fact:
       zerotier_deb_release_repo: bionic
+    when: 
+     - ansible_facts['distribution_major_version'] == "18"
+
+  - name: Overwrite Ubuntu release repo name for focal
+    set_fact:
+      zerotier_deb_release_repo: bionic
+    when: 
+     - ansible_facts['distribution_major_version'] == "20"
 
   - name: Re-gather facts
     setup: ~
 
   when:
     - ansible_facts['distribution'] == "Ubuntu"
-    - ansible_facts['distribution_major_version'] == "18"
     - release_repo.status == 404
 
 - name: Add ZeroTier APT repository
