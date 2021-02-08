@@ -22,6 +22,21 @@
     notify:
     - enable zerotier-one
 
+  - name: create facts.d
+    file:
+      path: /etc/ansible/facts.d
+      recurse: true
+      state: directory
+
+  - name: Install zerotier custom facts
+    copy:
+      src: zerotier.fact.py
+      dest: /etc/ansible/facts.d/zerotier.fact
+      mode: 0755
+
+  - name: Re-gather facts
+    setup: ~
+
   when:
   - zerotier_repo is not defined or zerotier_repo is succeeded
   - not ansible_check_mode
