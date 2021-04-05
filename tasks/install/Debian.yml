@@ -24,6 +24,19 @@
     - ansible_facts['distribution_major_version'] == "18"
     - release_repo.status == 404
 
+- block:
+  - name: Overwrite Ubuntu Focal release repo name
+    set_fact:
+      zerotier_deb_release_repo: buster
+
+  - name: Re-gather facts
+    setup: ~
+
+  when:
+    - ansible_facts['distribution'] == "Ubuntu"
+    - ansible_facts['distribution_release'] == "focal"
+    - release_repo.status == 404
+
 - name: Add ZeroTier APT repository
   apt_repository:
     repo: deb {{ zerotier_download_base_url }}/debian/{{ zerotier_deb_release_repo }} {{ zerotier_deb_release_repo }} main
