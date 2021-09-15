@@ -27,7 +27,7 @@
         name: "{{ zerotier_member_register_short_hostname | ternary(inventory_hostname_short, inventory_hostname) }}"
         description: "{{ zerotier_member_description | default() }}"
         config:
-          ipAssignments: "{{ zerotier_member_ip_assignments | default([]) | list }}"
+          ipAssignments: "{{ zerotier_member_ip_assignments | default() }}"
       body_format: json
     register: conf_apiresult
     delegate_to: "{{ zerotier_api_delegate }}"
