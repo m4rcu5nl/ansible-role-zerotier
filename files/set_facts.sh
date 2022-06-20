@@ -15,9 +15,13 @@ function file_content {
         while read -r; do
             network=($REPLY)
             echo "    \"${network[2]}\": {"
-            echo "        \"status\":\"${network[5]}\","
-            echo "        \"device\":\"${network[7]}\""
-
+            if [ ${network[4]} = "ACCESS_DENIED" ]; then
+                echo "        \"status\":\"${network[4]}\","
+            echo "        \"device\":\"${network[6]}\""
+        else
+                echo "        \"status\":\"${network[5]}\","
+                echo "        \"device\":\"${network[7]}\""
+            fi
             if [ "$counter" -eq "$network_count" ]; then
                 echo "    }"
             else
@@ -38,6 +42,4 @@ fi
 
 file_content > $FACT_FILE
 
-
-# TO-DO
-# Handle different states than "OK". Other statuses can mess up positions.
+# TODO: Handle statuses other than OK and ACCESS_DENIED
